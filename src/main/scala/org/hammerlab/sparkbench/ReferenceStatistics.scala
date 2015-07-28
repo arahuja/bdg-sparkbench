@@ -1,13 +1,12 @@
 package org.hammerlab.sparkbench
 
-import org.apache.spark.{SparkContext, SparkConf}
-import org.kohsuke.args4j.{Option => Args4jOption, CmdLineException, CmdLineParser}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.kohsuke.args4j.{CmdLineParser, Option => Args4jOption}
 
 object ReferenceStatistics extends App {
   
   @Args4jOption(name="--reference", required = true, usage="HDFS path to FASTA file")
   var referencepath: String = ""
-
 
   @Args4jOption(name="--outputPath", required = true, usage="Output path to save substring counts")
   var outputPath: String = ""
@@ -24,14 +23,6 @@ object ReferenceStatistics extends App {
     val sc = new SparkContext(conf)
 
     val parser = new CmdLineParser(this)
-    parser.setUsageWidth(150);
-
-    try {
-      parser.parseArgument(args:_*)
-    } catch {
-      case e: CmdLineException =>
-        println(e.getMessage)
-    }
     
     val lines = sc
       .textFile(referencepath)
